@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MDT-I Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f9;--surf:#fff;--ink:#101a2c;--mut:#5b6b85;--line:#e1e7f0;--navy:#1d3a63;--nink:#fff;--chip:#fff0b3;--chipink:#3a2d00;--red:#d4272b;--mic:#168a4a;--par:#d97316;--ter:#7a4cc2;--ok:#1d3a63;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html[data-theme="dark"]{--bg:#0b1322;--surf:#142036;--ink:#eaf0fb;--mut:#9db0cf;--line:#26375a;--navy:#2a4d82;--chip:#4a3d10;--chipink:#f6e7a8;--red:#ff7a7a;--mic:#52d38a;--par:#f4a661;--ter:#bb9cf2;--ok:#8fb4f0;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:'Tajawal','Segoe UI',Tahoma,sans-serif;font-size:16px;line-height:1.55;min-height:100vh}
+h1,h2,b,.dn{font-family:'Cairo','Segoe UI',Tahoma,sans-serif}
+.wrap{max-width:620px;margin:0 auto;padding:14px 14px 40px}
+button,a{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #f2b705;outline-offset:2px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bar h1{font-size:24px;font-weight:800;margin:0}
+.bar small{display:block;color:var(--mut);font-size:13px;font-weight:500}
+.tools{display:flex;gap:8px}
+.ib{height:38px;min-width:38px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font-weight:700;display:grid;place-content:center}
+.ib svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero{margin-top:14px;background:var(--navy);color:var(--nink);border-radius:20px;padding:16px}
+.hero .row1{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700}
+.hero button{background:#fde68a;color:#3a2d00;border:0;border-radius:99px;padding:3px 12px;font-weight:700;font-size:13px}
+.pbar{height:10px;border-radius:99px;background:rgba(255,255,255,.22);margin-top:12px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:#fde68a;border-radius:99px;transition:width .25s}
+.cnt{margin-top:6px;font-size:14px;font-weight:700}
+.pick{margin-top:14px;background:var(--surf);border:1px solid var(--line);border-radius:20px;padding:18px}
+.pick h2{font-size:18px;margin:0 0 12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.g8{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pick button{background:transparent;color:var(--ink);border:2px solid var(--navy);border-radius:14px;padding:14px 0;font:800 20px 'Cairo',sans-serif}
+.pick button:hover{background:var(--navy);color:var(--nink)}
+.sec{margin:22px 2px 8px;font:800 17px 'Cairo',sans-serif}
+.ev{display:flex;align-items:center;gap:12px;background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:10px 12px;margin-top:8px}
+.ev.ex{border-color:var(--red)}
+.ev.pastd{opacity:.5}
+.tile{flex:none;width:56px;text-align:center;background:var(--navy);color:var(--nink);border-radius:12px;padding:5px 0}
+.ev.ex .tile{background:var(--red);color:#fff}
+.tile b{display:block;font-size:22px;line-height:1.1}.tile span{font-size:12px}
+.ev .tx{flex:1;min-width:0}.ev .tx b{display:block;font-size:16px}.ev .tx span{color:var(--mut);font-size:13px;display:block}
+.pill{flex:none;background:var(--chip);color:var(--chipink);border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700}
+.chips{display:flex;gap:8px;margin-top:18px}
+.chips button{flex:1;padding:9px;border-radius:12px;border:2px solid var(--navy);background:transparent;color:var(--ink);font-weight:700}
+.chips button[aria-pressed=true]{background:var(--navy);color:var(--nink)}
+.dh{display:flex;align-items:center;gap:10px;margin-top:20px}
+.dn{background:var(--navy);color:var(--nink);border-radius:12px;min-width:46px;text-align:center;padding:2px 6px;font-size:20px;font-weight:800;line-height:1.2}
+.dn small{display:block;font-size:11px;font-weight:600}
+.dh b{font-size:16px}.dh i{font-style:normal;background:var(--chip);color:var(--chipink);border-radius:99px;padding:0 10px;font-size:12px;font-weight:700}
+.card{display:flex;gap:12px;padding:12px;background:var(--surf);border:1px solid var(--line);border-radius:16px;margin-top:10px;border-inline-start:6px solid var(--c)}
+.card.m{--c:var(--mic)}.card.p{--c:var(--par)}.card.t{--c:var(--ter)}
+.tm{flex:none;width:56px;text-align:center;background:var(--chip);color:var(--chipink);border-radius:12px;padding:6px 0;align-self:flex-start;font-family:'Cairo',sans-serif}
+.tm b{display:block;font-size:17px;line-height:1.2}.tm span{font-size:12px;opacity:.85}
+.bd{flex:1;min-width:0}
+.top{display:flex;gap:8px;align-items:center;font-size:12px;font-weight:700}
+.tag{color:var(--c)}.code{color:var(--mut)}
+.ttl{font-weight:700;direction:ltr;text-align:left;unicode-bidi:plaintext;margin-top:2px}
+.cp{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.cp span{background:var(--chip);color:var(--chipink);border-radius:8px;padding:0 8px;font-size:13px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.acts a,.acts button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:3px 12px;font-size:13px;font-weight:700;text-decoration:none}
+.acts .off{opacity:.6}
+.msg{color:var(--red);font-weight:700;font-size:13px;margin-top:6px}
+.card input{appearance:none;-webkit-appearance:none;flex:none;width:26px;height:26px;margin-top:2px;border:2px solid var(--mut);border-radius:8px;background:transparent;display:grid;place-content:center;cursor:pointer}
+.card input:checked{background:var(--ok);border-color:var(--ok)}
+.card input:checked::after{content:"";width:6px;height:12px;border:solid var(--bg);border-width:0 3px 3px 0;transform:rotate(45deg) translateY(-1px)}
+.card.done .bd,.card.done .tm{opacity:.5}
+.foot{margin-top:30px;padding:18px 16px;border:1px solid var(--line);background:var(--surf);border-radius:20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.fx{font-size:14px;color:var(--mut)}.fx b{color:var(--ink)}
+.fy{font-size:15px;font-weight:700}
+.wab{display:flex;align-items:center;gap:10px;border:2px solid #25D366;color:var(--ink);border-radius:99px;padding:5px 16px 5px 6px;font-weight:700;text-decoration:none;margin-top:4px}
+.wab svg{width:30px;height:30px}
+.bn{display:flex;align-items:center;gap:10px;border-radius:14px;padding:10px 12px;margin-bottom:10px;font-weight:700;font-size:14px;background:#fde68a;color:#3a2d00}
+.bn.x{background:var(--red);color:#fff}
+.bn span{flex:1}
+.bn button{border:0;background:rgba(0,0,0,.18);color:inherit;width:28px;height:28px;border-radius:50%;font-size:16px;line-height:1;flex:none}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div id="ban"></div>
+ <div class="bar">
+  <div><h1 data-i="app"></h1><small data-i="sub"></small></div>
+  <div class="tools">
+   <button class="ib" id="lg" aria-label="Language"></button>
+   <button class="ib" id="th" aria-label="Theme"></button>
+  </div>
+ </div>
+ <div class="hero" id="hero" hidden>
+  <div class="row1"><span id="who"></span><button id="chg" data-i="chg"></button></div>
+  <div class="pbar"><i id="fill"></i></div>
+  <div class="cnt" id="count"></div>
+ </div>
+ <div class="pick" id="pick" hidden>
+  <h2 id="ptitle"></h2>
+  <div class="g2" id="pg"></div>
+  <div class="g8" id="pn" hidden></div>
+ </div>
+ <div id="main" hidden>
+  <h2 class="sec" data-i="imp"></h2>
+  <div id="evs"></div>
+  <div class="chips"><button data-f="all" aria-pressed="true" data-i="all"></button><button data-f="th" aria-pressed="false" data-i="th"></button><button data-f="pr" aria-pressed="false" data-i="pr"></button></div>
+  <div id="app"></div>
+ </div>
+ <div class="foot"><div class="fx"><span data-i="made"></span> <b>omar mohamed</b> · © 2026</div>
+  <a class="wab" href="https://wa.me/201002931509" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="16" fill="#25D366"/><path fill="#fff" d="M16 6.2a9.8 9.8 0 0 0-8.400 14.800L6.400 25.600l4.700-1.200A9.800 9.800 0 1 0 16 6.200zm0 17.900c-1.500 0-2.900-.4-4.100-1.200l-.3-.2-2.800.7.8-2.700-.2-.3A8.100 8.100 0 1 1 16 24.100zm4.500-6c-.2-.1-1.500-.7-1.700-.8s-.4-.1-.6.100l-.8.900c-.1.200-.3.200-.5.100-1.500-.7-2.500-1.300-3.400-3-.3-.4.200-.4.700-1.300.1-.2 0-.3 0-.4l-.7-1.800c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.300-.2.300-.9.900-.9 2.100s.9 2.400 1 2.600c.1.200 1.800 2.800 4.400 3.800 1.600.7 2.300.7 3.100.6.500-.1 1.500-.6 1.700-1.200.2-.6.2-1.100.2-1.200-.1-.1-.3-.2-.5-.3z"/></svg><span data-i="wa"></span></a>
+ </div>
+</div>
+<script>
+const LK={L1:146,L2:150,L3:148,L4:148,T1:147,T2:149,L5:155,L6:156,L7:157,L8:158,T3:159,L9:164,MT:165,T4:166,T5:163,P1:170,P2:171,P3:173,P4:172};
+const TG="https://t.me/c/4444283454/";
+const TH=`20-10|L1|Introduction to Medical Parasitology|p|نجوى شعبان|7|9-10|11-12
+20-10|L2|Introduction to trematodes|p|مروة نجيب|7|10-11|12-1
+20-10|L3|Introduction to medical microbiology & bacterial cell structure I|m|شيرين إمام|8|11-12|9-10
+20-10|L4|Introduction to medical microbiology & bacterial cell structure II|m|دعاء|8|12-1|10-11
+20-10|T1|Heterophyes heterophyes|p|مروة|7|1:30-3|3-4:30
+20-10|T2|Normal human microbiota|m|دعاء|8|3-4:30|1:30-3
+21-10|L5|Introduction to Cestodes (H.n)|p|شيرين كشك|7|9-10|11-12
+21-10|L6|Introduction to Nematodes (E.v, loa loa)|p|نجوى|7|10-11|12-1
+21-10|L7|Bacterial physiology and metabolism|m|هايدي|8|11-12|9-10
+21-10|L8|Host parasite relationship|m|عبير|8|12-1|10-11
+21-10|T3|Nosocomial infection|m|عبير|8|1:30-3|3-4:30
+22-10|MT|Medical Terminology|t||7|9-10|10-11
+22-10|L9|Bacterial genetics and gene therapy|m|عبير|8|10-11|9-10
+22-10|T4|H. nana|p|زينب رمضان|7|1:30-3|11-1
+22-10|T5|Needle stick injury|m|عبير|8|11-1|1:30-3
+27-10|L10|Introduction to Protozoa- E.h.|p|نجوى شعبان|7|9-10|11-12
+27-10|L11|Protozoa- Leishmania|p|اميرة صلاح|7|10-11|12-1
+27-10|L12|Antimicrobial drugs -1|m|شيرين|8|11-12|9-10
+27-10|L13|Antimicrobial drugs - 2|m|حسناء|8|12-1|10-11
+27-10|T6|E. Vermicularis, Loa loa|p|اميرة صلاح|7|1:30-3|3-4:30
+27-10|T7|Infection control|m|حسناء|8|3-4:30|1:30-3
+28-10|L14|General mycology|m|رشا|8|9-10|11-12
+28-10|L15|General virology|m|هايدي|8|10-11|12-1
+28-10|T8|Cases of fungal infections|m|رشا|8|1:30-3|3-4:30
+28-10|T9|Entamoeba histolytica & leishmania|p|نجاة سليمان|7|3-4:30|1:30-3
+29-10|MT5|Medical Terminology-5|t||7|9-10|10-11
+29-10|L16|Introduction to immunity and immune system 1|m|عبير|8|10-11|9-10
+29-10|T10|Pathogenesis of viral infections|m|عبير|8|11-1|1:30-3
+3-11|T11|CBL (Parasitology)|p|رباب العطار + نجوى شعبان|7|9-11|11-1
+3-11|T12|CBL (Microbiology)|m||8|11-1|9-11
+5-11|MT6|Medical Terminology-6|t||7|9-10|10-11
+5-11|L17|Introduction to immunity and immune system II|m|هايدي|8|10-11|9-10
+5-11|L18|Innate immunity|m|رشا|8|11-12|12-1
+5-11|T13m|Vaccines|m|رشا|7|11-1|1:30-3
+10-11|L19|Arthropods I: Introduction to mosquitoes|p|شيرين|7|9-10|11-12
+10-11|L20|Arthropods II: Flies and myiasis|p|غادة حلمي|7|10-11|12-1
+10-11|L21|Cell mediated immunity|m|شيرين إمام|8|11-12|10-11
+10-11|T13p|Mosquitoes, flies & myiasis|p|شيرين + غادة|7|12-1:30|1:30-3
+11-11|L22|Direct parasitological diagnostic techniques|p|شيرين|7|9-10|11-12
+11-11|L23|Indirect parasitological diagnostic techniques|p|زينب رمضان|7|10-11|12-1
+11-11|L24|Humoral immunity|m|هايدي|8|11-12|9-10
+11-11|L25|Complement & cytokines|m|شيرين إمام|8|12-1|10-11
+11-11|T14|Fleas, Bugs, Lice & Ticks, mites|p|شيرين + زينب|7|1:30-3|3-4:30
+12-11|MT7|Medical Terminology-7|t||7|9-10|10-11
+12-11|L26|Antigen|m|عبير|8|10-11|9-10
+12-11|T16|Immunity to microbes|m|عبير|7|12-1:30|1:30-4:30
+17-11|L27|Immunity to parasites 1|p|نجوى شعبان|7|9-10|10-11
+17-11|L28|Hypersensitivity|m|حسناء|8|12-1|10-11
+17-11|T17|DSL (Parasitology)|p|نجاة + نجوى شعبان|7|12-1:30|1:30-4:30
+17-11|T18|Cases of Hypersensitivity - DSL|m|حسناء + شيرين|8|1:30-4:30|12-1:30
+18-11|L29|Tumor immunology|m|عبير|8|9-10|10-11
+18-11|L30|Auto-immune diseases|m|شيرين|8|10-11|9-10
+18-11|T19|Cases of autoimmune diseases|m|عبير|8|11-1|1:30-4:30
+19-11|MT8|Medical Terminology-8|t||7|9-10|10-11
+19-11|L31|Transplantation|m|هايدي|8|11-12|9-10
+19-11|L32|Immunodeficiency disorders|m|دعاء|8|12-1|10-11
+19-11|T20|Cases of Immunodeficiency disorders|m|دعاء|8|1:30-3|3-4:30`.split("\n").map(l=>l.split("|"));
+const PT={P1:["Trematodes","p"],P2:["Cestodes","p"],P3:["Safety laboratory rules, PPE & hand hygiene","m"],P4:["Collection and transport of samples","m"],P5:["Nematodes","p"],P6:["Protozoa","p"],P7:["Microscope & staining","m"],P8:["Sterilization 1","m"],P9:["Mosquitoes","p"],P10:["Flies","p"],P11:["Sterilization 2","m"],P12:["Culture media","m"],P13:["Fleas, bugs lice & ticks","p"],P14:["How to examine urine & stool sample?","p"],P15:["Identification of isolated bacteria","m"],P16:["Laboratory diagnosis of fungal infection","m"],P17:["Serological reaction I","m"],P18:["Serological reaction II","m"],P19:["Revision (Parasitology)","p"],P20:["Revision (Parasitology)","p"],P21:["Revision (Microbiology)","m"],P22:["Revision (Microbiology)","m"]};
+const PR=`A|25-10|P1|رباب العطار|D2-06|1
+A|25-10|P1|شيرين كشك|D2-07|2
+A|25-10|P2|غادة حلمي|D2-08|3
+A|25-10|P2|اميرة صلاح|D2-10|4
+A|25-10|P3|عبير|D2-01|5
+A|25-10|P3|دعاء|D2-02|6
+A|25-10|P4|مروه|D2-03|7
+A|25-10|P4|حسناء|D1-05|8
+B|26-10|P1|مروة نجيب|D2-06|1
+B|26-10|P1|رباب العطار|D2-07|2
+B|26-10|P2|زينب رمضان|D2-08|3
+B|26-10|P2|غادة حلمي|D2-10|4
+B|26-10|P3|شيماء|D2-01|5
+B|26-10|P3|رشا|D2-02|6
+B|26-10|P4|لمياء|D2-03|7
+B|26-10|P4||D1-05|8
+A|1-11|P5|مروة نجيب|D2-06|1
+A|1-11|P5|نجاة سليمان|D2-07|2
+A|1-11|P6|نجوى شعبان + زينب رمضان|D2-08|3
+A|1-11|P6|شيرين كشك + اميرة صلاح|D2-10|4
+A|1-11|P7|حسناء|D2-01|5
+A|1-11|P7|رشا|D2-02|6
+A|1-11|P8|لمياء|D2-03|7
+A|1-11|P8||D1-05|8
+B|2-11|P5|رباب العطار|D2-06|1
+B|2-11|P5|اميرة صلاح|D2-07|2
+B|2-11|P6|نجاة سليمان|D2-08|3
+B|2-11|P6|غادة حلمي|D2-10|4
+B|2-11|P7|عبير|D2-01|5
+B|2-11|P7|حسناء|D2-02|6
+B|2-11|P8|مروه|D2-03|7
+B|2-11|P8|دعاء|D1-05|8
+A|8-11|P9|نجاة سليمان|D2-06|1
+A|8-11|P9|اميرة صلاح|D2-07|2
+A|8-11|P10|مروة نجيب|D2-08|3
+A|8-11|P10|زينب رمضان|D2-10|4
+A|8-11|P11|لمياء|D2-01|5
+A|8-11|P11||D2-02|6
+A|8-11|P12|حسناء|D2-03|7
+A|8-11|P12||D1-05|8
+B|9-11|P9|مروة نجيب|D2-06|1
+B|9-11|P9|اميرة صلاح|D2-07|2
+B|9-11|P10|رباب العطار|D2-08|3
+B|9-11|P10|غادة حلمي|D2-10|4
+B|9-11|P11|عبير|D2-01|5
+B|9-11|P11|دعاء|D2-02|6
+B|9-11|P12|مروه|D2-03|7
+B|9-11|P12|حسناء|D1-05|8
+B|14-11|P17|عبير|D3 skill lab|5
+B|14-11|P17|مروه|D2-07|6
+B|14-11|P18|دعاء|D2-05|7
+B|14-11|P18|شيماء أحمد|D2-10|8
+A|14-11|P17|عبير|D3 skill lab|5
+A|14-11|P17|مروه|D2-07|6
+A|14-11|P18|دعاء|D2-05|7
+A|14-11|P18|شيماء أحمد|D2-10|8
+A|15-11|P13|نجاة سليمان|D2-06|1
+A|15-11|P13|اميرة صلاح|D2-07|2
+A|15-11|P14|مروة نجيب + نجوى شعبان|D2-08|3
+A|15-11|P14|غادة حلمي + شيرين كشك|D2-10|4
+A|15-11|P15|حسناء|D2-01|5
+A|15-11|P15|شيماء أحمد|D2-02|6
+A|15-11|P16|لمياء|D2-03|7
+A|15-11|P16|شيماء عصام|D1-05|8
+B|16-11|P13|رباب العطار|D2-06|1
+B|16-11|P13|غادة حلمي|D2-07|2
+B|16-11|P14|مروة نجيب|D2-08|3
+B|16-11|P14|زينب رمضان|D2-10|4
+B|16-11|P15|مروه|D2-01|5
+B|16-11|P15|حسناء|D2-02|6
+B|16-11|P16|شيماء أحمد|D2-03|7
+B|16-11|P16|رشا|D1-05|8
+B|21-11|P19|مروة + نجوى|D2-06|5
+B|21-11|P19|نجاة + شيرين|D2-07|6
+A|21-11|P20|اميرة + غادة|D2-05|7
+A|21-11|P20|رباب + زينب|D2-10|8
+A|21-11|P21|رشا|D2-01|5
+A|21-11|P21|مروة|D2-02|6
+B|21-11|P22|حسناء|D2-04|7
+B|21-11|P22|دعاء|D1-03|8`.split("\n").map(l=>l.split("|"));
+const DSL={A:["Type I hypersensitivity","Type II hypersensitivity","Type III hypersensitivity","Type IV hypersensitivity","Pathogenesis of hypersensitivity","Diagnosis of hypersensitivity","Treatment of hypersensitivity","Updates in hypersensitivity"],B:["Parasites transmitted by vector","Cutaneous parasites","Eye worm parasite","Parasites affecting children","Parasites affecting liver","Parasites affecting lungs","Parasites affecting brain","Rare Case reports in parasitology"]};
+const SLOT=["9-10:30","10:30-12","12-1:30","1:30-3"];
+const DEN={"نجوى شعبان":"Nagwa Shaaban","مروة نجيب":"Marwa Naguib","شيرين إمام":"Sherine Imam","دعاء":"Doaa","مروة":"Marwa","شيرين كشك":"Sherine Keshk","نجوى":"Nagwa","هايدي":"Haidy","عبير":"Abeer","زينب رمضان":"Zeinab Ramadan","اميرة صلاح":"Amira Salah","شيرين":"Sherine","حسناء":"Hasnaa","رشا":"Rasha","نجاة سليمان":"Nagat Soliman","رباب العطار":"Rabab El-Attar","غادة حلمي":"Ghada Helmy","نجاة":"Nagat","شيماء":"Shaimaa","لمياء":"Lamiaa","مروه":"Marwa","شيماء أحمد":"Shaimaa Ahmed","شيماء عصام":"Shaimaa Essam","غادة":"Ghada","زينب":"Zeinab","رباب":"Rabab","اميرة":"Amira"};
+const S={
+en:{app:"MDT-I Planner",sub:"Parasitology & Microbiology",chg:"Change group",pick:"Choose your group",pickN:g=>"Group "+g+": choose your number",all:"All",th:"Lectures",pr:"Practical",imp:"Important dates",done:"Done",of:"of",today:"Today",tom:"Tomorrow",inn:d=>"In "+d+" days",past:"Passed",pdf:"PDF",sum:"Summary",qz:"Quiz",nofile:"The lecture file will be uploaded soon",nofeat:"This feature will be added soon",lec:"Lecture",tut:"Tutorial",term:"Terminology",prac:"Practical",hall:"Hall",lab:"Lab",bld:"Building D",gov:"Benha Gov.",dr:"Dr. ",grp:"Group",hr:{60:"1 hr",90:"1.5 hr",120:"2 hr",180:"3 hr"},wd:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],mo:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],topic:"Your topic: ",dir:"ltr",lang:"en",lg:"ع",tl:"Dark mode",tl2:"Light mode",made:"Made by",want:"Want a website like this? Message me.",wa:"Chat on WhatsApp"},
+ar:{app:"مخطط MDT-I",sub:"Parasitology & Microbiology",chg:"غيّر الجروب",pick:"اختار جروبك",pickN:g=>"جروب "+g+": اختار رقم مجموعتك",all:"الكل",th:"محاضرات",pr:"عملي",imp:"مواعيد مهمة",done:"خلصت",of:"من",today:"النهارده",tom:"بكرة",inn:d=>"بعد "+d+" يوم",past:"عدّى",pdf:"PDF",sum:"ملخص",qz:"أسئلة",nofile:"سوف يتم رفع ملف المحاضرة قريبًا",nofeat:"سوف يتم إضافة هذه الميزة قريبًا",lec:"محاضرة",tut:"تيوتوريال",term:"مصطلحات",prac:"عملي",hall:"مدرج",lab:"معمل",bld:"مبنى D",gov:"بنها الحكومية",dr:"د. ",grp:"جروب",hr:{60:"ساعة",90:"ساعة ونص",120:"ساعتين",180:"3 ساعات"},wd:["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"],mo:["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"],topic:"موضوعك: ",dir:"rtl",lang:"ar",lg:"EN",tl:"وضع الليل",tl2:"وضع النهار",made:"Made by",want:"عايز موقع زي ده؟ كلمني.",wa:"كلمني على واتساب"}
+};
+const $=id=>document.getElementById(id);
+const ld=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let me=ld("mdt-grp",null),ck=ld("mdt-ck",{}),flt="all",lang=ld("mdt-lang","ar"),theme=ld("mdt-th",null),ac=null;
+if(!theme){try{theme=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"}catch(e){theme="light"}}
+const T=()=>S[lang];
+function tone(seq,vol){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();seq.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.connect(g);g.connect(ac.destination);const t=ac.currentTime+i*.11;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+.16);o.start(t);o.stop(t+.17)})}catch(e){}}
+function tm(s){const f=x=>{let[h,m]=x.split(":");h=+h;m=+(m||0);if(h<8)h+=12;return h*60+m};const[a,b]=s.split("-");return[f(a),f(b)]}
+function fm(m){let h=Math.floor(m/60);if(h>12)h-=12;return h+":"+String(m%60).padStart(2,"0")}
+function dt(d){const[x,m]=d.split("-").map(Number);return new Date(2026,m-1,x)}
+function today(){const t=new Date();t.setHours(0,0,0,0);return t}
+function docs(x){return x?T().dr+x.split(" + ").map(n=>lang==="en"?(DEN[n]||n):n).join(" + "):""}
+function items(){
+  const L=[];
+  TH.forEach(r=>L.push({d:r[0],k:r[1],ti:r[2],s:r[3],doc:r[4],pl:["h",r[5]],t:me.g==="A"?r[6]:r[7],kind:"th"}));
+  PR.forEach(r=>{if(r[0]!==me.g)return;const s=+r[5],n=me.n;if((n-s)%2!==0)return;const k=(((n-s)%8+8)%8)/2,p=PT[r[2]];L.push({d:r[1],k:r[2],ti:p[0],s:p[1],doc:r[3],pl:["l",r[4]],t:SLOT[k],kind:"pr"})});
+  return L.sort((a,b)=>dt(a.d)-dt(b.d)||tm(a.t)[0]-tm(b.t)[0]);
+}
+function typ(i){const t=T();return i.k.startsWith("MT")?t.term:i.kind==="pr"?t.prac:i.k[0]==="L"?t.lec:t.tut}
+function ago(D){const n=Math.round((D-today())/864e5),t=T();return n<0?t.past:n===0?t.today:n===1?t.tom:t.inn(n)}
+function evs(){
+  const t=T(),g=me.g,sk=g==="A"?["24-10","7-11"]:["31-10"];
+  const E=sk.map(d=>({d,en:"Skill Lab (Group "+g+")",ar:"سكيل لاب (جروب "+g+")"})).concat([{d:"4-11",en:"Mid-term exam",ar:"امتحان نص الترم",x:1},{d:"17-11",en:"DSL presentation",ar:"عرض الـ DSL",sub:t.topic+DSL[g][me.n-1]},{d:"23-11",en:"Practical exam",ar:"امتحان العملي",x:1}]).sort((a,b)=>dt(a.d)-dt(b.d));
+  const box=$("evs");box.textContent="";
+  E.forEach(e=>{
+    const D=dt(e.d),c=document.createElement("div");c.className="ev"+(e.x?" ex":"")+(D<today()?" pastd":"");
+    const tile=document.createElement("div");tile.className="tile";tile.innerHTML="<b></b><span></span>";tile.firstChild.textContent=D.getDate();tile.lastChild.textContent=t.mo[D.getMonth()];
+    const tx=document.createElement("div");tx.className="tx";const b=document.createElement("b");b.textContent=lang==="en"?e.en:e.ar;tx.appendChild(b);
+    const s=document.createElement("span");s.textContent=t.wd[D.getDay()]+(e.sub?" · "+e.sub:"")+(lang==="ar"?" · "+e.en:"");tx.appendChild(s);
+    const p=document.createElement("div");p.className="pill";p.textContent=ago(D);
+    c.append(tile,tx,p);box.appendChild(c);
+  });
+}
+function render(){
+  const t=T(),app=$("app");app.textContent="";let cur=null,box=null;
+  items().filter(i=>flt==="all"||i.kind===flt).forEach(i=>{
+    const D=dt(i.d);
+    if(i.d!==cur){cur=i.d;const h=document.createElement("div");h.className="dh";const n=document.createElement("div");n.className="dn";n.textContent=D.getDate();const sm=document.createElement("small");sm.textContent=t.mo[D.getMonth()];n.appendChild(sm);const b=document.createElement("b");b.textContent=t.wd[D.getDay()];h.append(n,b);if(+D===+today()){const e=document.createElement("i");e.textContent=t.today;h.appendChild(e)}app.appendChild(h)}
+    const id=i.d+"|"+i.k,c=document.createElement("div");c.className="card "+i.s;
+    const [a,b]=tm(i.t),tmb=document.createElement("div");tmb.className="tm";tmb.innerHTML="<b></b><span></span>";tmb.firstChild.textContent=fm(a);tmb.lastChild.textContent=fm(b);
+    const bd=document.createElement("div");bd.className="bd";
+    const top=document.createElement("div");top.className="top";const tg=document.createElement("span");tg.className="tag";tg.textContent=typ(i);top.appendChild(tg);
+    if(!i.k.startsWith("MT")){const cd=document.createElement("span");cd.className="code";cd.textContent=i.k.replace(/[mp]$/,"");top.appendChild(cd)}
+    const ti=document.createElement("div");ti.className="ttl";ti.textContent=i.ti;
+    const cp=document.createElement("div");cp.className="cp";
+    const pl=i.pl[0]==="h"?t.hall+" "+i.pl[1]+" · "+t.gov:t.lab+" "+i.pl[1]+" · "+t.bld;
+    [docs(i.doc),pl,t.hr[b-a]||(b-a)+"m"].filter(Boolean).forEach(x=>{const s=document.createElement("span");s.textContent=x;cp.appendChild(s)});
+    const acts=document.createElement("div");acts.className="acts";const msg=document.createElement("div");msg.className="msg";msg.hidden=true;
+    const say=x=>{tone([392,294],.09);msg.textContent="⚠️ "+x;msg.hidden=false;clearTimeout(msg._t);msg._t=setTimeout(()=>{msg.hidden=true},4000)};
+    const lk=LK[i.k];
+    if(lk){const a1=document.createElement("a");a1.href=TG+lk;a1.target="_blank";a1.rel="noopener";a1.textContent="📄 "+t.pdf;acts.appendChild(a1)}
+    else{const b1=document.createElement("button");b1.type="button";b1.className="off";b1.textContent="📄 "+t.pdf;b1.addEventListener("click",()=>say(t.nofile));acts.appendChild(b1)}
+    [["📝 "+t.sum],["❓ "+t.qz]].forEach(x=>{const b2=document.createElement("button");b2.type="button";b2.className="off";b2.textContent=x[0];b2.addEventListener("click",()=>say(t.nofeat));acts.appendChild(b2)});
+    bd.append(top,ti,cp,acts,msg);
+    const cb=document.createElement("input");cb.type="checkbox";cb.checked=!!ck[id];cb.setAttribute("aria-label",i.ti);c.classList.toggle("done",cb.checked);
+    cb.addEventListener("change",()=>{ck[id]=cb.checked;c.classList.toggle("done",cb.checked);sv("mdt-ck",ck);if(cb.checked)tone([660,880],.12);upd()});
+    c.append(tmb,bd,cb);app.appendChild(c);
+  });
+  upd();
+}
+function upd(){
+  if(!me)return;const L=items();let n=0;L.forEach(i=>{if(ck[i.d+"|"+i.k])n++});
+  $("fill").style.width=(n/L.length*100)+"%";$("count").textContent=T().done+" "+n+" "+T().of+" "+L.length;
+}
+function showMain(){
+  $("pick").hidden=true;$("main").hidden=false;$("hero").hidden=false;
+  $("who").textContent=T().grp+" "+me.g+" · "+me.g+me.n;evs();render();
+}
+function pick(){
+  const t=T();$("main").hidden=true;$("hero").hidden=true;$("pick").hidden=false;
+  $("ptitle").textContent=t.pick;$("pn").hidden=true;const pg=$("pg");pg.hidden=false;pg.textContent="";
+  ["A","B"].forEach(g=>{const b=document.createElement("button");b.textContent=g;b.addEventListener("click",()=>{
+    $("ptitle").textContent=T().pickN(g);pg.hidden=true;const pn=$("pn");pn.hidden=false;pn.textContent="";
+    for(let n=1;n<=8;n++){const c=document.createElement("button");c.textContent=g+n;c.addEventListener("click",()=>{me={g,n};sv("mdt-grp",me);showMain()});pn.appendChild(c)}
+  });pg.appendChild(b)});
+}
+const ANN=[];
+function banners(){
+  const t=T(),box=$("ban");box.textContent="";
+  const dis=ld("mdt-dis",{}),L=[];
+  ANN.forEach(a=>L.push({id:a.id,txt:"📢 "+(lang==="en"?a.en:a.ar),k:"n"}));
+  [["4-11","Mid-term exam","امتحان نص الترم"],["17-11","DSL presentation","عرض الـ DSL"],["23-11","Practical exam","امتحان العملي"]].forEach(e=>{const D=dt(e[0]),n=Math.round((D-today())/864e5);if(n>=0&&n<=7)L.push({id:"ex-"+e[0],txt:"⏰ "+(lang==="en"?e[1]:e[2])+" · "+ago(D)+" ("+D.getDate()+" "+t.mo[D.getMonth()]+")",k:"x"})});
+  L.filter(b=>!dis[b.id]).forEach(b=>{
+    const d=document.createElement("div");d.className="bn "+b.k;d.setAttribute("role","status");
+    const s=document.createElement("span");s.textContent=b.txt;
+    const x=document.createElement("button");x.type="button";x.textContent="×";x.setAttribute("aria-label","Close");
+    x.addEventListener("click",()=>{dis[b.id]=1;sv("mdt-dis",dis);d.remove()});
+    d.append(s,x);box.appendChild(d);
+  });
+}
+const SUN='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.900 4.900l1.400 1.400M17.700 17.700l1.400 1.400M2 12h2M20 12h2M4.900 19.100l1.400-1.400M17.700 6.300l1.400-1.400"/></svg>';
+const MOON='<svg viewBox="0 0 24 24"><path d="M21 12.800A9 9 0 1 1 11.200 3a7 7 0 0 0 9.800 9.800z"/></svg>';
+function applyAll(){
+  const t=T(),h=document.documentElement;h.lang=t.lang;h.dir=t.dir;h.dataset.theme=theme;document.title=t.app;
+  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t[e.dataset.i]);
+  $("lg").textContent=t.lg;$("th").innerHTML=theme==="dark"?SUN:MOON;$("th").title=theme==="dark"?t.tl2:t.tl;
+  if(me&&me.g&&me.n&&!$("main").hidden)showMain();else if(!me)pick();else if(!$("pick").hidden)pick();
+  banners();
+}
+document.querySelectorAll(".chips button").forEach(b=>b.addEventListener("click",()=>{flt=b.dataset.f;document.querySelectorAll(".chips button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()}));
+$("chg").addEventListener("click",pick);
+$("lg").addEventListener("click",()=>{lang=lang==="ar"?"en":"ar";sv("mdt-lang",lang);applyAll()});
+$("th").addEventListener("click",()=>{theme=theme==="dark"?"light":"dark";sv("mdt-th",theme);applyAll()});
+applyAll();if(me&&me.g&&me.n)showMain();else pick();
+</script>
+</body>
+</html>
